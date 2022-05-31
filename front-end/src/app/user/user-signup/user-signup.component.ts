@@ -36,7 +36,6 @@ export class UserSignupComponent implements OnDestroy {
     user.firstName = data.firstName;
     user.lastName = data.lastName;
     user.email = data.email;
-    user.accountName = data.accountName;
 
     this.regUserSubscription = this.registrationService.regUser(user)
       .subscribe((response: HttpResponse<any>) => {

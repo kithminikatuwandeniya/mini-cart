@@ -8,66 +8,30 @@ exports.addItem = function (req, res, next) {
     let units = req.body.unit;
     let volume = req.body.volume;
     let url = req.body.image_url;
-    if( typeof url !== 'undefined' || url==null){
-        url ="https://iheartcraftythings.com/wp-content/uploads/2021/07/6-38.jpg";
+    if (typeof url !== 'undefined' || url == null) {
+        url = "https://iheartcraftythings.com/wp-content/uploads/2021/07/6-38.jpg";
     }
 
-    let query_0 = "SELECT * FROM ITEMS WHERE name_item=?";
     let query_1 =
         "INSERT INTO ITEMS (name_item, price,description, unit, volume,image_url) VALUES(?,?,?,?,?,?)";
-    let query_2 = "UPDATE ITEMS SET price=?,description=?,unit=?,volume=?,url=? WHERE name_item=?";
-
-    dbConfig.query(query_0, [itemName], (err, rows) => {
-        if (err) {
-            console.log(err);
-            return res
-                .status(401)
-                .send({ success: false, message: "Error Connecting to Server !" });
-        } else {
-            try {
-                if (rows != null) {
-                    if (rows > 0) {
-                        dbConfig.query(query_2, [price, description, units, volume,url, itemName], (err, rows => {
-                            if (err) {
-                                console.log(err);
-                                return res
-                                    .status(401)
-                                    .send({ success: false, message: "Error Connecting to Server !" });
-                            } else {
-                                return res
-                                    .status(204)
-                                    .send({ success: true, message: "Item details updated successfully" });
-                            }
-                        }))
-                    } else {
-                        dbConfig.query(
-                            query_1,
-                            [itemName, price, description, units, volume, url],
-                            (err, rows) => {
-                                if (err) {
-                                    console.log(err);
-                                    return res.status(401).send({
-                                        success: false,
-                                        message: "Error Connecting to Server !",
-                                    });
-                                } else {
-                                    return res.status(201).send({
-                                        success: true,
-                                        message: "Item added successfully",
-                                    });
-                                }
-                            }
-                        );
-                    }
-                }
-            } catch (e) {
-                console.log(e);
-                return res
-                    .status(401)
-                    .send({ success: false, message: "Error Connecting to Server!" });
+    dbConfig.query(
+        query_1,
+        [itemName, price, description, units, volume, url],
+        (err, rows) => {
+            if (err) {
+                console.log(err);
+                return res.status(401).send({
+                    success: false,
+                    message: "Error Connecting to Server !",
+                });
+            } else {
+                return res.status(201).send({
+                    success: true,
+                    message: "Item added successfully",
+                });
             }
         }
-    });
+    );
 };
 
 exports.getItemByItemID = function (req, res, next) {

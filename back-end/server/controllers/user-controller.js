@@ -63,15 +63,14 @@ exports.login = function (req, res, next) {
 exports.register = function (req, res, next) {
   let email = req.body.email;
   let password = req.body.password;
-  let firstname = req.body.firstname;
-  let lastname = req.body.lastname;
+  let firstname = req.body.firstName;
+  let lastname = req.body.lastName;
   let address = req.body.address;
-
-  let query_0 = "SELECT * FROM USER WHERE email=?";
+  let query_0 = "SELECT * FROM USERS WHERE email=?";
   let query_1 =
-    "INSERT INTO USER (email, password, first_name, last_name, address,role) VALUES(?,?,?,?,?,'CUSTA')";
+    "INSERT INTO USERS (email, password, first_name, last_name,role) VALUES(?,?,?,?,'CUSTA')";
 
-  dbConfig.query(query_0, [email], (err, rows) => {
+  dbConfig.query(query_0, [email,password,firstname,lastname], (err, rows) => {
     if (err) {
       console.log(err);
       return res

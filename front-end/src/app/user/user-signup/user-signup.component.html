@@ -59,10 +59,10 @@
             {{userErrors['password']}}
           </div>
 
-          <div class="input-container">
+          <!-- <div class="input-container">
             <i class="fa fa-home icon"></i>
             <input ngModel class="input-field" type="text" placeholder="Account Name" name="accountName" required>
-          </div>
+          </div> -->
           <div class="alert-danger center" *ngIf="!data.valid && data.touched">
             Fill all the fields in a right way!
           </div>
@@ -86,8 +86,7 @@
         <div class="text-center">
           <h1 class="text-gray-900 mb-2">You've successfully registered!</h1>
           <p class="mb-4">
-            Wonderful! An email with activation instructions has been sent to the current address.
-            Please, check your inbox and follow the instructions to activate your account.</p>
+            Please go to login page and login using your credentials.</p>
           <hr>
         </div>
       </ng-template>
