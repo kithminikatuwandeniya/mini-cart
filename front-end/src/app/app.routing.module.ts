@@ -34,6 +34,8 @@ import { ViewUsersComponent } from './users/view-users/view-users.component';
 import { UpdateUsersComponent } from './users/update-users/update-users.component';
 import { DashboardViewComponent } from './dashboard/dashboard-view/dashboard-view.component';
 import { CartComponent } from './cart/cart.component';
+import { AddUsersComponent } from './users/add-users/add-users.component';
+import { CreateBillComponent } from './billings/create-bill/create-bill.component';
 
 export const routerComponents = [
   // main components("/home", "/sign-in", "/sign-up")
@@ -105,7 +107,9 @@ export const routerComponents = [
           { path: 'out-savedItem/:id/:savedItemId', component: SavedItemOutComponent, outlet: 'nav' },
           { path: 'create-item', component: ItemCreateComponent, outlet: 'nav' },
           { path: 'users', component: ViewUsersComponent, outlet: 'nav' },
+          { path: 'add-users', component: AddUsersComponent, outlet: 'nav' },
           { path: 'update-user/:id', component: UpdateUsersComponent, outlet: 'nav' },
+          { path: 'create-transaction', component: CreateBillComponent, outlet: 'nav' },
           { path: 'cart', component: CartComponent, outlet: 'nav' },
         ]
       },

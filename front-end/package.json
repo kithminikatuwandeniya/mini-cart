@@ -34,6 +34,7 @@
     "ng-multiselect-dropdown": "^0.2.10",
     "ng-toast": "^2.0.0",
     "ng2-charts": "^2.3.0",
+    "ngx-capture": "0.0.4-beta",
     "rxjs": "~6.6.7",
     "rxjs-compat": "6.5.4",
     "sockjs-client": "^1.4.0",

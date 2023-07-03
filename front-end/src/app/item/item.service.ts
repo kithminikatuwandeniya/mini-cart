@@ -27,6 +27,10 @@ export class ItemService {
     return this.http.get<any>(this.baseUrl + '/item?page=' + page + '&size=' + size + '&sort=' + sort + '&direction=' + direction);
   }
 
+  public getAllItems() {
+    return this.http.get<any>(this.baseUrl + '/item/all');
+  }
+
   public addItem(item: Item): Observable<Item> {
     return this.http.post<Item>(this.baseUrl + '/item/add-item', item);
   }
@@ -57,12 +61,7 @@ export class ItemService {
   public searchItemsByNameQuery(query: string) {
     return this.http.get<Item[]>(this.baseUrl + '/items/name?q=' + query);
   }
-  public findClientByName(): Observable<SavedItemAssociateModel[]> {
-    return this.http.get<SavedItemAssociateModel[]>(this.baseUrl + '/associates?type=CLIENT');
-  }
-  public findSuppliersByName(): Observable<SavedItemAssociateModel[]> {
-    return this.http.get<SavedItemAssociateModel[]>(this.baseUrl + '/associates?type=SUPPLIER');
-  }
+
 
   goToAddItem() {
     this.router.navigate(['home', { outlets: { nav: ['create-item'] } }]);

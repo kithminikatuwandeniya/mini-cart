@@ -1,10 +1,16 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold" style="color:#5e1208;">Users</h6>
+        <h6 class="m-0 font-weight-bold">Users</h6>
     </div>
 
     <div class="card-body">
         <div class="table-responsive" style="font-size: 0.85rem;">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchTerm" (ngModelChange)="onSearch()">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="clearSearch()">Clear</button>
+                </div>
+              </div>
             <table class="table table-striped table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <th><i sortable [sortValue]="sortValues[0]" (sortEvent)="onSort($event)">First Name</i></th>
@@ -13,15 +19,15 @@
                     <th><i sortable [sortValue]="sortValues[3]" (sortEvent)="onSort($event)">Role</i></th>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let user of users">
+                    <tr *ngFor="let user of filteredItems">
                         <td>{{user.first_name}}</td>
                         <td>{{user.last_name}}</td>
                         <td>{{user.email}}</td>
                         <td>{{user.role}}</td>
                         <button (click)="userService.goToUpdateUser(user.id)" class="btn btn-info"
                             style="margin-right: 5px;"><i class="fa fa-edit" style="font-size: 0.65rem;"></i></button>
-                        <button (click)="delete(item.id)" class="btn btn-danger" *ngIf="user.role!='ADMIN'"><i class="fa fa-trash"
-                                style="font-size: 0.65rem;"></i></button>
+                        <button (click)="openDelete(user,content)" class="btn btn-danger" *ngIf="user.role!='ADMIN'"><i
+                                class="fa fa-trash" style="font-size: 0.65rem;"></i></button>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -39,3 +45,19 @@
         </div>
     </div>
 </div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete User</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close"
+            (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">Do you want to delete user <b>{{user_selected.first_name}}</b> permanately?</div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="modal.close('Save click')" type="button"
+            data-dismiss="modal">Cancel</button>
+        <a routerLink (click)="delete(user_selected.id)" class="btn btn-danger">Delete</a>
+    </div>
+</ng-template>

@@ -1,8 +1,0 @@
-{
-  "env": {
-    "test": {
-      "PORT": 8000
-    },
-    "JWT_KEY": "Cl0udPiercer"
-  }
-}

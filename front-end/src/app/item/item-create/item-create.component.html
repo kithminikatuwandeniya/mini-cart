@@ -1,6 +1,6 @@
 <div class="card shadow mb-4"  style="background-color: transparent;">
   <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold" style="color:#5e1208;">Add Item </h6>
+    <h6 class="m-0 font-weight-bold">Add Item </h6>
   </div>
   <div class="card-body" style="background-color: transparent;">
     <div class="row">
@@ -9,27 +9,27 @@
           <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" [(ngModel)]="item.name" name="name" class="form-control" id="name">
-            <label for="price">Price:</label>
-            <input type="text" [(ngModel)]="item.price" name="price" class="form-control" id="price">
+            <label for="price">Price per Unit:</label>
+            <input type="number" [(ngModel)]="item.price" name="price" class="form-control" id="price">
             <label for="unit">Unit:</label>
-            <input type="text" [(ngModel)]="item.unit" name="unit" class="form-control" id="unit">
+            <input type="number" [(ngModel)]="item.unit" name="unit" class="form-control" id="unit">
             <label for="description">Description:</label>
             <input type="text" [(ngModel)]="item.description" name="description" class="form-control" id="description">
-            <label for="volume">Volume:</label>
-            <input type="text" [(ngModel)]="item.volume" name="volume" class="form-control" id="volume">
             <label for="url">Image URL:</label>
             <input type="text" [(ngModel)]="item.image_url" name="url" class="form-control" id="url">
           </div>
+          <h4 style="font-size: 12px;color:red;margin-top:5px;margin-bottom: 2px;">{{errorVal}}</h4>
           <button (click)="createItem()" class="btn btn-danger btn-icon-split">
             <span class="icon text-white-50">
               <i class="fas fa-check"></i>
             </span>
             <span class="text text-white-50">Add Item</span>
           </button>
+          
         </form>
       </div>
       <div class="col-sm-6">
-        <img src="../../../assets/img/add-item-bc.svg" style="width: 99%;height: 100%;background-image: url(../../../assets/img/add-items-w.svg);background-repeat: no-repeat;background-position:bottom;">
+        <img src="../../../assets/img/Team work_Monochromatic.svg" style="width: 99%;height: 100%;">
       </div>
     </div>
   </div>

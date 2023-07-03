@@ -43,7 +43,8 @@
         style="padding-top:0px" *ngIf="role=='ADMIN'">
         <i class="fas fa-fw fa-table"></i>
         <span>Items List</span></a>
-      <a [routerLink]="[{ outlets: { nav: ['item-list'] } }]" routerLinkActive="active" class="nav-link active" *ngIf="role!='ADMIN'">
+      <a [routerLink]="[{ outlets: { nav: ['item-list'] } }]" routerLinkActive="active" class="nav-link active"
+        *ngIf="role!='ADMIN'">
         <i class="fas fa-fw fa-table"></i>
         <span>Items List</span></a>
       <a [routerLink]="[{ outlets: { nav: ['create-item'] } }]" routerLinkActive="active" class="nav-link active"
@@ -56,7 +57,10 @@
     <li class="nav-item" *ngIf="role=='ADMIN'">
       <a [routerLink]="[{ outlets: { nav: ['users'] } }]" routerLinkActive="active" class="nav-link active">
         <i class="fas fa-fw fa-chart-area"></i>
-        <span>Users</span></a>
+        <span>List Users</span></a>
+      <a [routerLink]="[{ outlets: { nav: ['add-users'] } }]" routerLinkActive="active" class="nav-link active" style="padding-top:0px">
+        <i class="fas fa-fw fa-user-plus"></i>
+        <span>Add Users</span></a>
     </li>
     <hr class="sidebar-divider" *ngIf="role!='ADMIN'">
     <div class="sidebar-heading" *ngIf="role!='ADMIN'">Cart</div>
@@ -65,12 +69,12 @@
         <i class="fa fa-shopping-cart"></i>
         <span>Cart</span></a>
     </li>
-    <div class="sidebar-heading" *ngIf="role=='ADMIN'">Associate management</div>
-    <!-- Nav Item - Associates -->
+    <hr class="sidebar-divider" *ngIf="role=='ADMIN'">
+    <div class="sidebar-heading" *ngIf="role=='ADMIN'">Billings</div>
     <li class="nav-item" *ngIf="role=='ADMIN'">
-      <a [routerLink]="[{ outlets: { nav: ['associates'] } }]" routerLinkActive="active" class="nav-link active">
-        <i class="fas fa-fw fa-arrow-circle-up"></i>
-        <span>Associates</span></a>
+      <a [routerLink]="[{ outlets: { nav: ['create-transaction'] } }]" routerLinkActive="active" class="nav-link active">
+        <i class="fas fa-fw fa-money-bill"></i>
+        <span>Create Bill</span></a>
     </li>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

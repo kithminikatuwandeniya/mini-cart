@@ -38,7 +38,6 @@ export class ItemUpdateComponent implements OnInit {
       this.savedItems.forEach(x => {
         this.getWarehouse(x.warehouseId);
       });
-
     });
 
   }
@@ -53,6 +52,7 @@ export class ItemUpdateComponent implements OnInit {
     this.itemService.updateItem(this.item).subscribe(data => {
       this.item = data;
     });
+    this.router.navigate(['home', { outlets: { nav: ['item-table'] } }]);
   }
 
 }

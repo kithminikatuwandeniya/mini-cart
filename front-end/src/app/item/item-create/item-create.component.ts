@@ -11,15 +11,23 @@ import { Item } from "../../models/item.model";
 export class ItemCreateComponent implements OnInit {
   public item: Item = new Item();
   public itemResult: Item;
-
+  public errorVal ="";
   constructor(private itemService: ItemService) { }
 
   ngOnInit() {
   }
+
   createItem() {
-    this.itemService.addItem(this.item).subscribe(data => {
-      this.itemResult = data;
-      this.itemService.goToUpdateItem(this.itemResult.id);
-    });
+    if(this.item.name!=='' && this.item.price!==0 && this.item.description!=='' && this.item.unit!==''){
+      this.itemService.addItem(this.item).subscribe(data => {
+        this.itemResult = data;
+        this.itemService.goToUpdateItem(this.itemResult.id);
+      },error=>{
+        this.errorVal = "Please fill all the fields";
+      });
+    }else{
+      this.errorVal = "Please fill all the fields";
+    }
+    
   }
 }

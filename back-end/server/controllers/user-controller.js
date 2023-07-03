@@ -1,8 +1,17 @@
 const config = require("../../config.json");
 const dbConfig = require("../../my-sql-connection");
 const jwt = require("jsonwebtoken");
+const nodemailer = require('nodemailer');
 
-// login functionality
+const transporter = nodemailer.createTransport({
+  host: 'smtp.mailtrap.io',
+  port: 2525,
+  auth: {
+    user: '663b135fe7eaa8',
+    pass: 'c88976c7361953'
+  }
+});
+
 exports.login = function (req, res, next) {
   let email = req.body.username;
   let password = req.body.password;
@@ -66,11 +75,15 @@ exports.register = function (req, res, next) {
   let firstname = req.body.firstName;
   let lastname = req.body.lastName;
   let address = req.body.address;
+  let role = req.body.role;
+  if (role == null || role == "") {
+    role = "CASH";
+  }
   let query_0 = "SELECT * FROM USERS WHERE email=?";
   let query_1 =
-    "INSERT INTO USERS (email, password, first_name, last_name,role) VALUES(?,?,?,?,'CUSTA')";
+    `INSERT INTO USERS (email, password, first_name, last_name, role) VALUES(?,?,?,?,'${role}')`;
 
-  dbConfig.query(query_0, [email,password,firstname,lastname], (err, rows) => {
+  dbConfig.query(query_0, [email, password, firstname, lastname], (err, rows) => {
     if (err) {
       console.log(err);
       return res
@@ -116,14 +129,10 @@ exports.register = function (req, res, next) {
 };
 
 exports.forgetPassword = function (req, res, next) {
-  // email - get from req
-  // random gen 6 digit no
-  // insert in to user table - col -generateforgetpasswordCode
-  // validate forgetpassword code
   let email = req.body.email;
-  let query_0 = "SELECT * FROM USER WHERE email=?";
+  let query_0 = "SELECT * FROM USERS WHERE email=?";
   let query_1 =
-    "UPDATE USER SET forget_password_code=?,validate_forget_password_code=false WHERE email=?";
+    "UPDATE USERS SET forget_password_code=?,validate_forget_password_code=false WHERE email=?";
   let forget_password_code = Math.floor(100000 + Math.random() * 900000);
   dbConfig.query(query_0, [email], (err, rows) => {
     if (err) {
@@ -146,11 +155,27 @@ exports.forgetPassword = function (req, res, next) {
               message: "Error Connecting to Server !",
             });
           } else {
-            return res.status(201).send({
-              success: true,
-              code: forget_password_code,
-              message: "forget password successfully generated",
+            const mailOptions = {
+              from: 'donotreply@minicart.lk',
+              to: email,
+              subject: 'Test Email',
+              text: 'Verification Code: ' + forget_password_code
+            };
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                return res.status(500).send({
+                  success: false,
+                  message: "Error while sending email",
+                });
+              } else {
+                return res.status(201).send({
+                  success: true,
+                  code: forget_password_code,
+                  message: "forget password successfully generated",
+                });
+              }
             });
+
           }
         });
       }
@@ -158,34 +183,70 @@ exports.forgetPassword = function (req, res, next) {
   });
 };
 
-exports.updatePassword = function (req, res, next) {
-  let username = req.body.username;
-  let oldpasswrod = req.body.oldpasswrod;
-  let password = req.body.password;
-
-  let query_0 = "UPDATE USERS SET password=? WHERE email=? AND password=?";
-
-  dbConfig.query(query_0, [password, username, oldpasswrod], (err, rows) => {
+exports.verifyCode = function (req, res, next) {
+  let email = req.body.email;
+  let code = req.body.code;
+  let query_0 = "SELECT * FROM USERS WHERE email=?";
+  let query_1 =
+    "UPDATE USERS SET validate_forget_password_code=? WHERE email=?";
+  dbConfig.query(query_0, [email], (err, rows) => {
     if (err) {
       console.log(err);
       return res
         .status(401)
         .send({ success: false, message: "Error Connecting to Server !" });
+    } else if (rows != null) {
+      if (rows == 0) {
+        return res.status(404).send({
+          success: false,
+          message: "Email Not Found !",
+        });
+      } else if (rows[0].forget_password_code == code) {
+        dbConfig.query(query_1, [true, email], (err, rows) => {
+          if (err) {
+            console.log(err);
+            return res.status(401).send({
+              success: false,
+              message: "Error Connecting to Server !",
+            });
+          } else {
+            return res.status(201).send({
+              success: true,
+              validate: true,
+              message: "Validated Successfully",
+            });
+          }
+        });
+      } else {
+        return res.status(403).send({
+          success: false,
+          validate: false,
+          message: "Invalid code.",
+        });
+      }
+    }
+  });
+};
+
+exports.updatePassword = function (req, res, next) {
+  let email = req.body.email;
+  let password = req.body.password;
+  let query_0 = "UPDATE USERS SET password=? WHERE email=?";
+
+  dbConfig.query(query_0, [password, email], (err, rows) => {
+    if (err) {
+      return res
+        .status(500)
+        .send({ success: false, message: "Error Connecting to Server !" });
     } else {
       if (rows != null) {
         return res.status(200).send({
-          id: rows[0].id,
-          firstname: rows[0].first_name,
-          lastname: rows[0].last_name,
-          email: rows[0].email,
-          role: rows[0].role,
-          createdDate: rows[0].created_date,
-          updatedDate: rows[0].updated_date
+          success: true
         });
-      }else{
+      } else {
         return res
-        .status(401)
-        .send({ success: false, message: "Invalid Creadentials !" });
+          .status(500)
+          .send({ success: false, message: "Internal Server Error" });
       }
     }
   });
@@ -311,3 +372,22 @@ exports.updateUser = function (req, res, next) {
     }
   });
 };
+
+exports.deleteUser = function (req, res, next) {
+  let id = req.params.id;
+  let query_0 = "DELETE FROM USERS  WHERE id = ?";
+
+  dbConfig.query(query_0, [id], (err, rows) => {
+    if (err) {
+      console.log(err);
+      return res
+        .status(401)
+        .send({ success: false, message: "Error Connecting to Server !" });
+    } else {
+      return res.status(200).send({
+        success: true,
+        message: "User Deleted Successfully."
+      });
+    }
+  });
+}

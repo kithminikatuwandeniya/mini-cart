@@ -1,7 +1,6 @@
 <div class="card shadow mb-4">
-  
   <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold" style="color:#5e1208;">Update Item</h6>
+    <h6 class="m-0 font-weight-bold" style="color:#115261;">Update Item</h6>
   </div>
   <div class="card-body">
     <div class="row">
@@ -16,8 +15,6 @@
             <input type="text" [(ngModel)]="item.unit" name="unit" class="form-control" id="unit">
             <label for="description">Description:</label>
             <input type="text" [(ngModel)]="item.description" name="description" class="form-control" id="description">
-            <label for="volume">Volume:</label>
-            <input type="text" [(ngModel)]="item.volume" name="volume" class="form-control" id="volume">
             <label for="volume">Image URL:</label>
             <input type="text" [(ngModel)]="item.image_url" name="image_url" class="form-control" id="image_url">
             <button (click)="updateItem()" class="btn btn-danger btn-icon-split" style="margin-top: 10px;">
@@ -31,8 +28,8 @@
         <!-- <button (click)="itemService.goToCreateSavedItem(item.id)" class="btn btn-info" style="margin-left: 10px">Add SavedItem</button> -->
       </div>
       <div class="col-sm-6">
-        <img src="../../../assets/img/item-update-bc.svg"
-          style="width: 90%;height: 100%;background-image: url(../../../assets/img/item-update-w.svg);background-repeat: no-repeat;background-position:bottom;">
+        <img src="../../../assets/img/Team building _Monochromatic.svg"
+          style="width: 90%;height: 100%;">
       </div>
       <div *ngIf="warehouses.length>0" class="table-responsive">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

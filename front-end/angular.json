@@ -151,5 +151,8 @@
       }
     }
   },
-  "defaultProject": "ims-ui"
+  "defaultProject": "ims-ui",
+  "cli": {
+    "analytics": false
+  }
 }

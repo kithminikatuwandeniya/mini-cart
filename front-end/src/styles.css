@@ -7,3 +7,25 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
 }
+.btn-danger{
+  background-color: #68e1fd;
+  border-color: #23a4c1;
+  color: grey;
+}
+.btn-danger:hover{
+  background-color: #50aec3;
+  border-color: #23a4c1;
+  color: black;
+}
+.btn-danger:not(:disabled):not(.disabled):active, .show>.btn-danger.dropdown-toggle {
+  color: black;
+  background-color: #23a4c1;
+  border-color: rgb(35, 164, 193);
+}
+.btn-danger.focus, .btn-danger:focus {
+  box-shadow: 0 0 0 0.2rem rgba(35, 164, 193,.5);
+}
+
+h6{
+  color: #115261;
+}

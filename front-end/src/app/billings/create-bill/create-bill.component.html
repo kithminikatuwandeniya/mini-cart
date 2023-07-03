@@ -1,0 +1,113 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold">Generate Bill</h6>
+    </div>
+    <!-- <div class="card-body">
+        <div class="table-responsive" style="font-size: 0.85rem;">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchTerm"
+                    (ngModelChange)="onSearch()">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" (click)="clearSearch()">Clear</button>
+                </div>
+            </div>
+            <div class="dropdown">
+                {{filteredItems.length}}
+                <ul class="dropdown-menu" *ngIf="filteredItems.length > 0">
+                    <li *ngFor="let result of filteredItems">
+                        <a class="dropdown-item" href="#">{{item.name_item}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="card-body" #screen>
+        <div class="table-responsive" style="font-size: 0.85rem;margin-left: 2%;margin-right: 2%;">
+            <article>
+                <address contenteditable>
+                    <p>Sahana<br>Galle</p>
+                </address>
+                <table class="meta" style="margin-right: 2.5rem;">
+                    <tr>
+                        <th><span>Invoice #</span></th>
+                        <td><span>{{invoideNo}}</span></td>
+                    </tr>
+                    <tr>
+                        <th><span>Date</span></th>
+                        <td><span>{{todayISOString | date}}</span></td>
+                    </tr>
+                </table>
+                <table class="inventory">
+                    <thead>
+                        <tr>
+                            <th><span>Item</span></th>
+                            <th><span>Description</span></th>
+                            <th><span>Unit Price</span></th>
+                            <th><span>Quantity</span></th>
+                            <th><span>Price</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of billedItems;let i = index">
+                            <td *ngIf="(billedItems[i].value>=0)"><a class="cut" (click)="removeRow(item)">-</a><span
+                                    style="width:80%">
+                                    <select class='form-control' [(ngModel)]="billedItems[i].value"
+                                        (ngModelChange)="selectedItemBill(i)">
+                                        <option class='form-control' *ngFor="let item_ of items;let j=index"
+                                            value={{item_.id}}>
+                                            {{item_.name_item}}</option>
+                                    </select></span></td>
+                            <td *ngIf="!(billedItems[i].value>=0)"><a class="cut"
+                                    (click)="removeRow(item)">-</a><span>{{billedItems[i].name_item}}</span></td>
+                            <td><span>{{(billedItems[i].description).substring(0,50)}}</span></td>
+                            <td><span data-prefix>Rs.</span><span>{{billedItems[i].price}}</span></td>
+                            <td><span><input class="form-control" type="number" min="1"
+                                        [(ngModel)]="billedItems[i].volume" (ngModelChange)="totalChange()"
+                                        onkeydown="if(event.key==='.'){event.preventDefault();}" /></span></td>
+                            <td><span
+                                    data-prefix>Rs.</span><span>{{(billedItems[i].price)*(billedItems[i].volume)}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a class="add" (click)="addRow()" *ngIf="items.length>=billedItems.length">+</a>
+                <table class="balance" style="margin-right: 2.5rem;">
+                    <tr>
+                        <th><span>Total</span></th>
+                        <td><span data-prefix>Rs.</span><span>{{total}}</span></td>
+                    </tr>
+                    <tr>
+                        <th><span>Amount Paid</span></th>
+                        <td><span data-prefix style="float: left;width:15%;margin-top: 0.5rem;">Rs.</span><input
+                                class="form-control" style="float: right;width: 80%;padding:0;text-align: right;"
+                                type="number" min="0" [(ngModel)]="paidAmount" (ngModelChange)="remainingChange()" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><span>Balance Due</span></th>
+                        <td><span data-prefix>Rs.</span><span>{{remaining}}</span></td>
+                    </tr>
+                </table>
+            </article>
+        </div>
+        <button (click)="capture(content)" class="btn btn-info btn-icon-split" style="float: right;font-size: 12px;">
+            <span class="text text-white-50">Downlod Invoice</span>
+        </button>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Invoice Status</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close"
+            (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">Invoice <b>{{invoideNo}}</b> saved successfully in Server.</div>
+    <div class="modal-footer">
+        <button class="btn btn-info" (click)="modal.close('Save click')" type="button"
+            data-dismiss="modal">Close</button>
+    </div>
+</ng-template>

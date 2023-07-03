@@ -1,7 +1,7 @@
-import {Inject, Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {catchError} from "rxjs/operators";
-import {throwError} from "rxjs";
+import { Inject, Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError } from "rxjs/operators";
+import { throwError } from "rxjs";
 import AppError from "../../errors/app-error";
 
 @Injectable({
@@ -13,8 +13,28 @@ export class ResetPasswordService {
   }
 
   public sendResetPasswordToken(email: string) {
-    const body = {email: email};
-    return this.http.post(this.baseUrl + '/forgot-password', body)
+    const body = { email: email };
+    return this.http.post(this.baseUrl + '/user/forget-password', body)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(new AppError(error));
+        })
+      )
+  }
+
+  public validateToken(email: string, code: string) {
+    const body = { email: email, code: code };
+    return this.http.post(this.baseUrl + '/user/code-verify', body)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(new AppError(error));
+        })
+      )
+  }
+
+  public changePassword(password: string, repassword: string, email: string) {
+    const body = { password: password, repassword: repassword, email: email };
+    return this.http.post(this.baseUrl + '/user/change-password', body)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           return throwError(new AppError(error));
